@@ -1,0 +1,33 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # หรือสามารถใช้ branch ที่คุณต้องการ
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        run: |
+          git config --global user.name "Piyacholch"
+          git config --global user.email "piyachol.c@kkumail.com"
+          git checkout -b gh-pages
+          git add -f dist
+          git commit -m "Deploy"
+          git push origin gh-pages --force
